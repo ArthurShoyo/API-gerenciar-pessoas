@@ -28,33 +28,27 @@ public class EnderecoServices {
         return enderecoRepository.findAll();
     }
 
-
-    @Transactional
-    public PessoaModels criarEndereco(Long id, EnderecoModels novoEnderoco) {
+    public List<EnderecoModels> getAdressPerson (Long id) {
         Optional<PessoaModels> pessoaModelsOptional = pessoaRepository.findByWithEnderecos(id);
         if (pessoaModelsOptional.isPresent()) {
+            return enderecoRepository.findAllAddressesByPessoaId(id);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
 
-            PessoaModels pessoa = pessoaModelsOptional.get();
-            pessoa.getEnderecos().add(novoEnderoco);
 
-            novoEnderoco.setPessoa(pessoa);
-
+    @Transactional
+    public PessoaModels criarEndereco(Long id, EnderecoModels novoEndereco) {
+        Optional<PessoaModels> pessoaModelsOptional = pessoaRepository.findByWithEnderecos(id);
+        if (pessoaModelsOptional.isPresent()) {
+            PessoaModels pessoaExiste = pessoaModelsOptional.get();
             EnderecoModels endereco = new EnderecoModels();
-
-            endereco.setLogradouro(novoEnderoco.getLogradouro());
-            endereco.setCep(novoEnderoco.getCep());
-            endereco.setNumero(novoEnderoco.getNumero());
-            endereco.setCidade(novoEnderoco.getCidade());
-            endereco.setPessoa(novoEnderoco.getPessoa());
-
-
-
-
-            enderecoRepository.save(novoEnderoco);
-
-
-
-            return pessoaRepository.save(pessoa);
+            endereco.setLogradouro(novoEndereco.getLogradouro());
+            endereco.setCep(novoEndereco.getCep());
+            endereco.setCidade(novoEndereco.getCidade());
+            endereco.setNumero(novoEndereco.getNumero());
+            pessoaExiste.getEnderecos().add(endereco);
+            return pessoaRepository.save(pessoaExiste);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
