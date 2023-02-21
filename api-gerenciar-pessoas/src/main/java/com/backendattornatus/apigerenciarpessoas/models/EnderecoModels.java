@@ -27,10 +27,31 @@ public class EnderecoModels {
     @Column(name = "cidade")
     private String cidade;
 
+    @Column(name = "principal")
+    private boolean principal;
+
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id")
     private PessoaModels pessoa;
+
+
+
+
+    public EnderecoModels(){
+
+    }
+
+
+
+    public boolean isPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(boolean principal) {
+        this.principal = principal;
+    }
 
     public PessoaModels getPessoa() {
         return pessoa;

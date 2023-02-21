@@ -42,9 +42,15 @@ public class PessoaServices {
         Optional<PessoaModels> optionalPessoaModels = pessoaRepository.findById(id);
         if (optionalPessoaModels.isPresent()) {
             PessoaModels pessoaExiste = optionalPessoaModels.get();
-            pessoaExiste.setNome(pessoaModels.getNome());
-            pessoaExiste.setDataNasc(pessoaModels.getDataNasc());
-            pessoaExiste.setEnderecos(pessoaModels.getEnderecos());
+            if (pessoaModels.getNome() != null) {
+                pessoaExiste.setNome(pessoaModels.getNome());
+            }
+            if (pessoaModels.getDataNasc() != null) {
+                pessoaExiste.setDataNasc(pessoaModels.getDataNasc());
+            }
+
+
+
             return pessoaRepository.save(pessoaExiste);
         } throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }

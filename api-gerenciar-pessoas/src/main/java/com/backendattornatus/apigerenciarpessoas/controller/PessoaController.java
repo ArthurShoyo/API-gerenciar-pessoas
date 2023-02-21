@@ -1,5 +1,6 @@
 package com.backendattornatus.apigerenciarpessoas.controller;
 
+import com.backendattornatus.apigerenciarpessoas.models.EnderecoModels;
 import com.backendattornatus.apigerenciarpessoas.models.PessoaModels;
 import com.backendattornatus.apigerenciarpessoas.repository.PessoaRepository;
 import com.backendattornatus.apigerenciarpessoas.services.PessoaServices;
