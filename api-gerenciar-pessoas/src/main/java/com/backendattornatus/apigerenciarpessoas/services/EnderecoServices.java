@@ -23,9 +23,7 @@ public class EnderecoServices {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public List<EnderecoModels> mostrarEnderecos() {
-        return enderecoRepository.findAll();
-    }
+
 
     public List<EnderecoModels> mostrarEnderecosDaPessoa(Long id) {
         Optional<PessoaModels> pessoaModelsOptional = pessoaRepository.findByWithEnderecos(id);

@@ -16,10 +16,6 @@ public class EnderecoController {
 
     private EnderecoServices enderecoServices;
 
-    @GetMapping("/endereco")
-    private ResponseEntity<Object> pegarTodosEndereco() {
-        return ResponseEntity.status(HttpStatus.OK).body(enderecoServices.mostrarEnderecos());
-    }
 
     @GetMapping("/endereco/{id}")
     private ResponseEntity<Object> pegarEnderecosDaPessoa(@PathVariable(name = "id") Long id) {
