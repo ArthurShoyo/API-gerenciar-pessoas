@@ -61,3 +61,17 @@ caso tenha outro endereco mais antigo que carregava, o mais antigo ira se tornar
 - MVC
 - Código limpo
 - Qualidade de código
+
+
+### Perguntas e Respostas
+
+Qualidade de código
+
+1.	Durante a implementação de uma nova funcionalidade de software solicitada, quais critérios você avalia e implementa para garantia de qualidade de software?
+
+- Certifico que a funcionalidade implementada atenda aos requisitos do usuário e do negócios, testes pata garantir a nova funcionalidade, documentação para ajudar a garantir que os usuários finais possam entender e usar a nova funcionalidade, código limpo para facilitar futuras manutenções, padrões de codificação e revisões do código. É importante seguir todos esses critérios para garantir a qualidade do software
+
+
+2.	Em qual etapa da implementação você considera a qualidade de software?
+
+- Considero em todas as etapas, desde o planejamento até a manutenção do software, para garantir um produto final de alta qualidade e satisfazer os usuários finais
