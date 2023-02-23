@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 @Entity
@@ -31,6 +30,25 @@ public class PessoaModels {
 
     public PessoaModels() {
 
+    }
+
+
+    public PessoaModels(Long id, String nome, LocalDate dataNasc, List<EnderecoModels> enderecos) {
+        this.id = id;
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.enderecos = enderecos;
+    }
+    public PessoaModels( String nome, LocalDate dataNasc, List<EnderecoModels> enderecos) {
+
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.enderecos = enderecos;
+    }
+
+    public PessoaModels(String nome, LocalDate dataNasc) {
+        this.nome = nome;
+        this.dataNasc = dataNasc;
     }
 
     public Long getId() {

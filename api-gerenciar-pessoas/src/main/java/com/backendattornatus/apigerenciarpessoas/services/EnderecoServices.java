@@ -1,12 +1,11 @@
 package com.backendattornatus.apigerenciarpessoas.services;
 
-import com.backendattornatus.apigerenciarpessoas.dtos.EnderecoDto;
+
 import com.backendattornatus.apigerenciarpessoas.models.EnderecoModels;
 import com.backendattornatus.apigerenciarpessoas.models.PessoaModels;
 import com.backendattornatus.apigerenciarpessoas.repository.EnderecoRepository;
 import com.backendattornatus.apigerenciarpessoas.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,16 +23,16 @@ public class EnderecoServices {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public List<EnderecoModels> getAllEndereco() {
+    public List<EnderecoModels> mostrarEnderecos() {
         return enderecoRepository.findAll();
     }
 
-    public List<EnderecoModels> getAdressPerson (Long id) {
+    public List<EnderecoModels> mostrarEnderecosDaPessoa(Long id) {
         Optional<PessoaModels> pessoaModelsOptional = pessoaRepository.findByWithEnderecos(id);
         if (pessoaModelsOptional.isPresent()) {
             return enderecoRepository.findAllAddressesByPessoaId(id);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "usuario nao existe");
     }
 
 
@@ -42,30 +41,92 @@ public class EnderecoServices {
         Optional<PessoaModels> pessoaModelsOptional = pessoaRepository.findByWithEnderecos(id);
         if (pessoaModelsOptional.isPresent()) {
             PessoaModels pessoaExiste = pessoaModelsOptional.get();
+
+
             EnderecoModels endereco = new EnderecoModels();
+
+
+            for (EnderecoModels enderecoModels: pessoaExiste.getEnderecos()) {
+                if (enderecoModels.isPrincipal()) {
+                    if (novoEndereco.isPrincipal()) {
+                        enderecoModels.setPrincipal(false);
+                        endereco.setPrincipal(novoEndereco.isPrincipal());
+                    } else {
+                        endereco.setPrincipal(false);
+                    }
+
+
+                    break;
+                } else {
+                    endereco.setPrincipal(novoEndereco.isPrincipal());
+                }
+
+
+            }
+
             endereco.setLogradouro(novoEndereco.getLogradouro());
+
+
             endereco.setCep(novoEndereco.getCep());
+
+
             endereco.setCidade(novoEndereco.getCidade());
+
+
             endereco.setNumero(novoEndereco.getNumero());
+
+
+
+
             pessoaExiste.getEnderecos().add(endereco);
+
+
             return pessoaRepository.save(pessoaExiste);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
 
-
-    public EnderecoModels atualizarEndereco(Long id,EnderecoModels enderecoModels) {
-        Optional<EnderecoModels> optionalEnderecoModels = enderecoRepository.findById(id);
-        if (optionalEnderecoModels.isPresent()) {
-            EnderecoModels enderecoExiste = optionalEnderecoModels.get();
-            enderecoExiste.setLogradouro(enderecoModels.getLogradouro());
-            enderecoExiste.setCep(enderecoModels.getCep());
-            enderecoExiste.setNumero(enderecoModels.getNumero());
-            enderecoExiste.setCidade(enderecoModels.getCidade());
-            enderecoExiste.setCidade(enderecoModels.getCidade());
-            return enderecoRepository.save(enderecoExiste);
+    @Transactional
+    public EnderecoModels atualizarEndereco(Long id, Long idEndereco, EnderecoModels enderecoModels) {
+        Optional<EnderecoModels> optionalEnderecoModels = enderecoRepository.findById(idEndereco);
+        Optional<PessoaModels> optionalPessoaModels  = pessoaRepository.findById(id);
+        if (!optionalEnderecoModels.isPresent() && !optionalPessoaModels.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        EnderecoModels enderecoExiste = optionalEnderecoModels.get();
+        PessoaModels pessoaExiste = optionalPessoaModels.get();
+        for (EnderecoModels endereco: pessoaExiste.getEnderecos()) {
+            if (enderecoModels.isPrincipal()) {
+                endereco.setPrincipal(false);
+                enderecoExiste.setPrincipal(enderecoModels.isPrincipal());
+            } else {
+                enderecoExiste.setPrincipal(enderecoModels.isPrincipal());
+            }
+        }
+        if (enderecoModels.getLogradouro() != null) {
+            enderecoExiste.setLogradouro(enderecoModels.getLogradouro());
+        }
+        if (enderecoModels.getCep() != null) {
+            enderecoExiste.setCep(enderecoModels.getCep());
+        }
+        if (enderecoModels.getNumero() != null) {
+            enderecoExiste.setNumero(enderecoModels.getNumero());
+        }
+        if (enderecoModels.getCidade() != null) {
+            enderecoExiste.setCidade(enderecoModels.getCidade());
+        }
+        return enderecoRepository.save(enderecoExiste);
+
+    }
+
+    public void deletarEndereco(Long idPessoa, Long idEndereco) {
+        Optional<PessoaModels> pessoaModelsOptional = pessoaRepository.findById(idPessoa);
+        Optional<EnderecoModels> enderecoModelsOptional = enderecoRepository.findById(idEndereco);
+        if (!pessoaModelsOptional.isPresent() && !enderecoModelsOptional.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        }
+        enderecoRepository.deleteById(idEndereco);
     }
 }

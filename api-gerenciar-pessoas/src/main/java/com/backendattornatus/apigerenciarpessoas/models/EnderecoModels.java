@@ -1,8 +1,8 @@
 package com.backendattornatus.apigerenciarpessoas.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -43,7 +43,35 @@ public class EnderecoModels {
 
     }
 
+    public EnderecoModels(EnderecoModels enderecoModels) {
+    }
 
+    public EnderecoModels(Long id, String logradouro, String cep, String numero, String cidade, boolean principal) {
+        this.id = id;
+        this.logradouro = logradouro;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.principal = principal;
+    }
+    public EnderecoModels( String logradouro, String cep, String numero, String cidade, boolean principal) {
+
+        this.logradouro = logradouro;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.principal = principal;
+    }
+
+    public EnderecoModels(Long id, String logradouro, String cep, String numero, String cidade, boolean principal, PessoaModels pessoa) {
+        this.id = id;
+        this.logradouro = logradouro;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.principal = principal;
+        this.pessoa = pessoa;
+    }
 
     public boolean isPrincipal() {
         return principal;

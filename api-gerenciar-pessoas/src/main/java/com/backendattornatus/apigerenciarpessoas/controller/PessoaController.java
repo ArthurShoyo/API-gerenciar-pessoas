@@ -1,16 +1,12 @@
 package com.backendattornatus.apigerenciarpessoas.controller;
 
-import com.backendattornatus.apigerenciarpessoas.models.EnderecoModels;
+
 import com.backendattornatus.apigerenciarpessoas.models.PessoaModels;
-import com.backendattornatus.apigerenciarpessoas.repository.PessoaRepository;
+
 import com.backendattornatus.apigerenciarpessoas.services.PessoaServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpEntity;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,4 +39,11 @@ public class PessoaController {
         PessoaModels pessoaAtualizada = pessoaServices.editarPessoa(id, pessoaModels);
         return ResponseEntity.status(HttpStatus.OK).body(pessoaAtualizada);
     }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Object> deletarPessoa(@PathVariable(value = "id") Long id) {
+        pessoaServices.removerPessoa(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Pessoa deletada");
+    }
+
 }
