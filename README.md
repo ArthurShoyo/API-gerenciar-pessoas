@@ -56,11 +56,14 @@ caso tenha outro endereco mais antigo que carregava, o mais antigo ira se tornar
 - API REST
 - Banco de dados H2
 
+
 ### Metodologias usadas
 
 - MVC
 - Código limpo
 - Qualidade de código
+- Teste de Integração
+- API REST
 
 
 ### Perguntas e Respostas
